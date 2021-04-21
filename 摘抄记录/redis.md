@@ -195,4 +195,343 @@ lists有一个专门的特点，使得它们更适合实现队列，并且通常
 
 * 用LMOVE可以构建更安全的队列或者循环队列
 * LMOVE对应的阻塞命令就是BLMOVE
+#### keys的自动创建和移除
 
+到目前为止，我们在push元素的时候从未创建一个空的列表，而在列表已无元素之后也并未主动移除空列表。redis会主动做这些事，当列表为空时移除列表，当列表不存在时创建列表，它适合所有由多个元素组成的redis data——streams，sets，sorted sets和hashes。
+
+一般我们总结为如下三个规则：
+
+* 当我们向一个集合数据类型添加元素时，如果目标key不存在，添加元素前一个空的集合数据类型会被创建
+* 当我们从一个集合数据类型移除元素时，如果这个value为空，这个key会被自动销毁。stream类型是唯一的例外。
+* 调用一些只读命令时（如LLEN），或者一个移除空数据中元素的写命令时，结果都是一样的。就好像这个key拥有一个命令期望找到的空的数据类型
+
+demo：
+
+```plain
+> del mylist
+(integer) 1
+> lpush mylist 1 2 3
+(integer) 3
+```
+但是如果这个key是存在的，我们不能调用错误的指令:
+```plain
+> set foo bar
+OK
+> lpush foo 1 2 3
+(error) WRONGTYPE Operation against a key holding the wrong kind of value
+> type foo
+string
+```
+第二个例子：
+```plain
+> lpush mylist 1 2 3
+(integer) 3
+> exists mylist
+(integer) 1
+> lpop mylist
+"3"
+> lpop mylist
+"2"
+> lpop mylist
+"1"
+> exists mylist
+(integer) 0
+```
+所有元素被pop后，这个key就不再存在了。
+第三个例子：
+
+```plain
+> del mylist
+(integer) 0
+> llen mylist
+(integer) 0
+> lpop mylist
+(nil)
+```
+### Redis Hashes
+
+redis看起来就是人们期望看到的“散列值”的样子，是键值对的模式：
+
+```plain
+> hmset user:1000 username antirez birthyear 1977 verified 1
+OK
+> hget user:1000 username
+"antirez"
+> hget user:1000 birthyear
+"1977"
+> hgetall user:1000
+1) "username"
+2) "antirez"
+3) "birthyear"
+4) "1977"
+5) "verified"
+6) "1"
+```
+hashes是用于代表Objects的，事实上你可以存储任意多的字段，并没有什么限制（除了内存）。所以你能在自己的应用中用不同的方式使用hashes。
+hmset命令可以设置hash的多个字段，hget可以获得哈希的单个字段。hmget类似于hget，但是返回一个values的数组
+
+```plain
+> hmget user:1000 username birthyear no-such-field
+1) "antirez"
+2) "1977"
+3) (nil)
+```
+有一些命令能对单个字段进行操作，比如HINCRBY
+```plain
+> hincrby user:1000 birthyear 10
+(integer) 1987
+> hincrby user:1000 birthyear 10
+(integer) 1997
+```
+可以在redis命令文档中找到所有的hash命令列表。
+值得注意的是，小的hash（只有几个元素的小的values）在内存中以特殊方式编译，为了让内存更为有效。
+
+### Redis Sets
+
+redis sets是无序字符串列表。SADD命令添加新的元素到set，set也有很多操作，比如测试一个元素是否存在，获取多个sets的交集或者并集，等等。
+
+```plain
+> sadd myset 1 2 3
+(integer) 3
+> smembers myset
+1. 3
+2. 1
+3. 2
+```
+这里我有三个元素并且告诉redis返回所有元素，你可以看到返回结果并未排序。redis在每一次调用时都能随意以任何顺序返回这些元素，因为set不对用户保证返回一定会有序。
+redis有检测是否是成员的指令。例如，检测是否一个元素存在：
+
+```plain
+> sismember myset 3
+(integer) 1
+> sismember myset 30
+(integer) 0
+```
+3是set成员，而30不是
+展示objects之间的关系用sets是方便的。例如我们很容易用sets实现标签。
+
+模拟这个问题的一个简单方法就是有一个我们想要标记的每一个物体的集合。这个集合包含物体标签的ID。
+
+一个例子是为新闻文章添加标签。如果一个ID为1000的文章被标记着1，2，5，77。集合可以讲这些标记ID和新闻项相关联。
+
+```plain
+> sadd news:1000:tags 1 2 5 77
+(integer) 4
+```
+我们可能也想获得相反的关系：一个指定标签下的新闻项列表
+```plain
+> sadd tag:1:news 1000
+(integer) 1
+> sadd tag:2:news 1000
+(integer) 1
+> sadd tag:5:news 1000
+(integer) 1
+> sadd tag:77:news 1000
+(integer) 1
+```
+获取给定对象的所有标记非常简单
+```plain
+> smembers news:1000:tags
+1. 5
+2. 1
+3. 77
+4. 2
+```
+注意：这个例子中我们假设你有另一个数据结构，比如一个redis hash，可以映射标记IDs到标记names。
+执行一些繁琐的操作用redis命令也是比较简单的。比如我们想要一些被标记了1、2、10和77的新闻项。我们可以用sinter指令去做，可以获得不同集合的交集。可以用：
+
+```plain
+> sinter tag:1:news tag:2:news tag:10:news tag:27:news
+... results here ...
+```
+除了交集，你还可以执行并集、差集，甚至获取一个随机的元素，等等。
+获取一个随机元素的命令是SPOP，很适合于某些问题。例如实现一种网上扑克牌，你可能想用一个set代替你的卡组。想象我们用一个字符的前缀表示C（clubs黑桃）、D（diamonds方块）、H（hearts红心）、S（spades梅花）：
+
+```plain
+>  sadd deck C1 C2 C3 C4 C5 C6 C7 C8 C9 C10 CJ CQ CK
+D1 D2 D3 D4 D5 D6 D7 D8 D9 D10 DJ DQ DK H1 H2 H3
+H4 H5 H6 H7 H8 H9 H10 HJ HQ HK S1 S2 S3 S4 S5 S6
+S7 S8 S9 S10 SJ SQ SK
+(integer) 52
+```
+现在我们给每个玩家发5张牌。通过SPOP命令移除一个随机的元素，返回个客户端，这个命令就是这个例子中的完美操作。
+然而如果我们直接对着卡牌调用它，下一次再玩的时候我们需要再次填充卡牌，那不是理想的。所以为了能直接开始，我们可以做一个这个set的拷贝，存储卡牌在game:1:deck:key下
+
+这可以通过SUNIONSYORE命令完成，这个命令是获取多个set的并集并把结果存储在另一个集合中。既然并集就是集合本身，那么就能拷贝卡组用下面命令：
+
+```plain
+> sunionstore game:1:deck deck
+(integer) 52
+```
+现在可以给第一个玩家发5张牌了：
+```plain
+> spop game:1:deck
+"C6"
+> spop game:1:deck
+"CQ"
+> spop game:1:deck
+"D1"
+> spop game:1:deck
+"CJ"
+> spop game:1:deck
+"SJ"
+```
+一个对，牌不算好。。。
+然后就能介绍提供set内的元素数量的命令了，在关于set理论的文章中，这通常被叫做set的基数，对应的redis命令是SCARD
+
+```plain
+> scard game:1:deck
+(integer) 47
+```
+简单的数学公式：52-5=47
+如果你只想要获得随机的元素而不把它们移出set中，更合适的命令是SRANDMENMBER。它也意味着可能会返回重复的元素。
+
+### Redis Sorted Sets
+
+sorted sets是一种类似于Set和Hash混合体的数据类型。它的元素和set一样，也是由不同元素组成的，不重复的字符串元素，某种意义上sorted set是和set一样的。
+
+然而sets内部的元素是无序的，sorted set中的每一个元素是联系着一个浮点数值，这个数值就是分数（这是为什么sorted sets类似hash类型的，因为每个元素都匹配着一个分数）
+
+sorted sets中的元素是按序排列的（它们不是按照请求排序的，顺序是这个数据结构的一种特性，代表着sorter sets）。他们的顺序是根据下面的规则排列的：
+
+* 如果A和B是两个有不同分数的元素，如果A.score>B.score，那么A>B
+* 如果A和B恰好分数相同，那么当A在字典序上在B之前时，A>B。A和B字符串不能是相等的，因为sorted sets只能用不同的元素
+
+让我们开始一个简单的例子，添加几个黑客的名称作为sorted sets元素，把他们的出生年份作为score
+
+```plain
+> zadd hackers 1940 "Alan Kay"
+(integer) 1
+> zadd hackers 1957 "Sophie Wilson"
+(integer) 1
+> zadd hackers 1953 "Richard Stallman"
+(integer) 1
+> zadd hackers 1949 "Anita Borg"
+(integer) 1
+> zadd hackers 1965 "Yukihiro Matsumoto"
+(integer) 1
+> zadd hackers 1914 "Hedy Lamarr"
+(integer) 1
+> zadd hackers 1916 "Claude Shannon"
+(integer) 1
+> zadd hackers 1969 "Linus Torvalds"
+(integer) 1
+> zadd hackers 1912 "Alan Turing"
+(integer) 1
+```
+能看出来ZADD类似于SADD，但是多了一个额外的参数（被添加的元素之前展示的那个），那就是score。ZADD也是可变参数，所以可以一次性添加多个score-value对，虽然上述例子中未能使用。
+执行提示：sorted sets内部是一个有跳表和哈希表组成的双端口的数据结构，所以每一次我们添加一个元素的时间复杂度为O(log(N))。但是当我们请求排序的数据的时候，redis就不用做额外的工作了，数据已经排好序了。
+
+```plain
+> zrange hackers 0 -1
+1) "Alan Turing"
+2) "Hedy Lamarr"
+3) "Claude Shannon"
+4) "Alan Kay"
+5) "Anita Borg"
+6) "Richard Stallman"
+7) "Sophie Wilson"
+8) "Yukihiro Matsumoto"
+9) "Linus Torvalds"
+```
+提示：0和-1意味着从元素索引0到最后一个元素（-1在这里的作用和在LRANGE命令中的作用是一样的）
+如果我想要用相反的方式排序他们呢，获得更年轻的顺序而不是更老的？只需用ZRERANGE代替ZRANGE：
+
+```plain
+> zrevrange hackers 0 -1
+1) "Linus Torvalds"
+2) "Yukihiro Matsumoto"
+3) "Sophie Wilson"
+4) "Richard Stallman"
+5) "Anita Borg"
+6) "Alan Kay"
+7) "Claude Shannon"
+8) "Hedy Lamarr"
+9) "Alan Turing"
+```
+也可以返回分数，用withscores参数：
+```plain
+> zrange hackers 0 -1 withscores
+1) "Alan Turing"
+2) "1912"
+3) "Hedy Lamarr"
+4) "1914"
+5) "Claude Shannon"
+6) "1916"
+7) "Alan Kay"
+8) "1940"
+9) "Anita Borg"
+10) "1949"
+11) "Richard Stallman"
+12) "1953"
+13) "Sophie Wilson"
+14) "1957"
+15) "Yukihiro Matsumoto"
+16) "1965"
+17) "Linus Torvalds"
+18) "1969"
+```
+#### Operating on ranges
+
+sorted sets在这方面是更有效的。它们可以根据范围操作。让我们获得出生在1950年之前的人。我们用ZRANGEBYSCORE命令实现它。
+
+```plain
+> zrangebyscore hackers -inf 1950
+1) "Alan Turing"
+2) "Hedy Lamarr"
+3) "Claude Shannon"
+4) "Alan Kay"
+5) "Anita Borg"
+```
+我们请求redis返回负无穷大到1950年之间的元素（边界被包括在内）
+也可以根据范围移除元素。让我们移除1940和1960间的黑客。
+
+```plain
+> zremrangebyscore hackers 1940 1960
+(integer) 4
+```
+zremrangebyscore可能不是最好的命令名称，但是它是非常有用的，并且返回移除元素的数量。
+另一个有用的操作是获取排名。有可能我们会去查找有序元素集合中一个元素的位置。
+
+```plain
+> zrank hackers "Anita Borg"
+(integer) 4
+```
+类似的，zrevrange可以用于获取倒序时的排名
+#### Lexicographical scores
+
+在redis2.8的版本，一个新的特性加入了，就是允许按照字典序获取范围，假设一个sorted set中的元素插入时是完全相同的分数（元素与C memcmp函数进行比较，因此保证没有排序规则，每个Redis实例都会以相同的输出进行应答）
+
+通过字典序操作的主要命令是ZRANGEBYLEX，ZREVRANGEBYLEX，ZREMRANGEBYLEX和ZLEXCOUNT
+
+例如，我们再次加入著名黑客列表，但是这一次所有元素分数都设为0。
+
+```plain
+> zadd hackers 0 "Alan Kay" 0 "Sophie Wilson" 0 "Richard Stallman" 0
+  "Anita Borg" 0 "Yukihiro Matsumoto" 0 "Hedy Lamarr" 0 "Claude Shannon"
+  0 "Linus Torvalds" 0 "Alan Turing"
+```
+因为这种排序规则，它们已经按照字典序排列了。
+```plain
+> zrange hackers 0 -1
+1) "Alan Kay"
+2) "Alan Turing"
+3) "Anita Borg"
+4) "Claude Shannon"
+5) "Hedy Lamarr"
+6) "Linus Torvalds"
+7) "Richard Stallman"
+8) "Sophie Wilson"
+9) "Yukihiro Matsumoto"
+```
+使用ZRANGEBYLEX我们可以访问字典序范围：
+```plain
+> zrangebylex hackers [B [P
+1) "Claude Shannon"
+2) "Hedy Lamarr"
+3) "Linus Torvalds"
+```
+ranges可以被包含或者排除（依据第一个字符），字符串正无穷和负无穷可以用+和-指定。可以从文档中查看更多信息。
+这个特色是重要的，因为它允许我们像一个一般的索引一样使用sorted sets。例如，如果你想要通过一个128bit的无符号整数参数索引元素，你所需要做的就是添加元素到sorted sets中，用同样的分数（例如0），但是有一个16字节的前缀，由128位的大端数字组成。由于数字是大端，字典序事实上是数字排序，你可以请求128位空间的范围，并获得丢弃前缀的元素值。
+
+#### 
