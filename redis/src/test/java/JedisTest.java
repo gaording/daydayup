@@ -1,6 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPubSub;
 import redis.clients.jedis.Transaction;
 
 import java.util.HashMap;
@@ -22,11 +23,11 @@ import java.util.Set;
  */
 public class JedisTest {
 
-    private Jedis jedis;
+    private static Jedis jedis;
 
     @Before
     public void initJedis() {
-        jedis = new Jedis("127.0.0.1", 6379);
+        jedis = new Jedis("127.0.0.1", 6379,0);
     }
 
     //jedis string、list、set、hash、zset
@@ -87,5 +88,160 @@ public class JedisTest {
         Jedis jedis_S=new Jedis("127.0.0.1",6380);
         jedis_S.slaveof("127.0.0.1",6379);
     }
+
+    //pub/sub
+    @Test
+    public void testPS(){
+        JedisPubSub jedisPubSub=new JedisPubSub() {
+            @Override
+            public void onMessage(String channel, String message) {
+                super.onMessage(channel, message);
+                System.out.println("-----channel:"+channel+"----message:"+message);
+            }
+
+            @Override
+            public void onPMessage(String pattern, String channel, String message) {
+                super.onPMessage(pattern, channel, message);
+                System.out.println("----pattern:"+pattern+"-----channel:"+channel+"----message:"+message);
+            }
+
+            @Override
+            public void onSubscribe(String channel, int subscribedChannels) {
+                System.out.println("订阅了channel----"+channel+"---订阅频道数---"+subscribedChannels);
+                super.onSubscribe(channel, subscribedChannels);
+            }
+
+            @Override
+            public void onUnsubscribe(String channel, int subscribedChannels) {
+                super.onUnsubscribe(channel, subscribedChannels);
+            }
+
+            @Override
+            public void onPUnsubscribe(String pattern, int subscribedChannels) {
+                super.onPUnsubscribe(pattern, subscribedChannels);
+            }
+
+            @Override
+            public void onPSubscribe(String pattern, int subscribedChannels) {
+                System.out.println("订阅了正则模式channel----"+pattern+"---订阅频道数---"+subscribedChannels);
+                super.onPSubscribe(pattern, subscribedChannels);
+            }
+
+            @Override
+            public void unsubscribe() {
+                super.unsubscribe();
+            }
+
+            @Override
+            public void unsubscribe(String... channels) {
+                super.unsubscribe(channels);
+            }
+
+            @Override
+            public void subscribe(String... channels) {
+                super.subscribe(channels);
+            }
+
+            @Override
+            public void psubscribe(String... patterns) {
+                super.psubscribe(patterns);
+            }
+
+            @Override
+            public void punsubscribe() {
+                super.punsubscribe();
+            }
+
+            @Override
+            public void punsubscribe(String... patterns) {
+                super.punsubscribe(patterns);
+            }
+        };
+        Jedis testJedis=TestOneJedisClient.getJedis();
+        //只有第一个订阅会生效，后面两个都无效
+        jedisPubSub.proceed(testJedis.getClient(),"foo");
+        jedisPubSub.proceedWithPatterns(testJedis.getClient(),"f*");
+        jedisPubSub.proceed(testJedis.getClient(),"goo");
+
+    }
+
+    //pub/sub
+    @Test
+    public void testPS2(){
+        JedisPubSub jedisPubSub=new JedisPubSub() {
+            @Override
+            public void onMessage(String channel, String message) {
+                super.onMessage(channel, message);
+                System.out.println("-----channel:"+channel+"----message:"+message);
+            }
+
+            @Override
+            public void onPMessage(String pattern, String channel, String message) {
+                super.onPMessage(pattern, channel, message);
+                System.out.println("----pattern:"+pattern+"-----channel:"+channel+"----message:"+message);
+            }
+
+            @Override
+            public void onSubscribe(String channel, int subscribedChannels) {
+                System.out.println("订阅了channel----"+channel+"---订阅频道数---"+subscribedChannels);
+                super.onSubscribe(channel, subscribedChannels);
+            }
+
+            @Override
+            public void onUnsubscribe(String channel, int subscribedChannels) {
+                super.onUnsubscribe(channel, subscribedChannels);
+            }
+
+            @Override
+            public void onPUnsubscribe(String pattern, int subscribedChannels) {
+                super.onPUnsubscribe(pattern, subscribedChannels);
+            }
+
+            @Override
+            public void onPSubscribe(String pattern, int subscribedChannels) {
+                System.out.println("订阅了正则模式channel----"+pattern+"---订阅频道数---"+subscribedChannels);
+                super.onPSubscribe(pattern, subscribedChannels);
+            }
+
+            @Override
+            public void unsubscribe() {
+                super.unsubscribe();
+            }
+
+            @Override
+            public void unsubscribe(String... channels) {
+                super.unsubscribe(channels);
+            }
+
+            @Override
+            public void subscribe(String... channels) {
+                super.subscribe(channels);
+            }
+
+            @Override
+            public void psubscribe(String... patterns) {
+                super.psubscribe(patterns);
+            }
+
+            @Override
+            public void punsubscribe() {
+                super.punsubscribe();
+            }
+
+            @Override
+            public void punsubscribe(String... patterns) {
+                super.punsubscribe(patterns);
+            }
+        };
+        Jedis testJedis=TestOneJedisClient.getJedis();
+        //只有第一个订阅会生效，后面两个都无效
+        jedisPubSub.proceed(testJedis.getClient(),"goo");
+        jedisPubSub.proceed(testJedis.getClient(),"foo");
+        jedisPubSub.proceedWithPatterns(testJedis.getClient(),"f*");
+
+    }
+
+
+
 
 }

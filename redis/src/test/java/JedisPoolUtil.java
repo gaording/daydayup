@@ -29,7 +29,7 @@ public class JedisPoolUtil {
                     poolConfig.setMaxTotal(1000);
                     poolConfig.setMaxIdle(32);
                     poolConfig.setTestOnBorrow(true);
-                    jedisPool=new JedisPool(poolConfig,"localhost",6379);
+                    jedisPool=new JedisPool(poolConfig,"localhost",6379,20000);
                 }
             }
         }
