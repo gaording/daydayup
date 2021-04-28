@@ -112,3 +112,113 @@ mysqlcheck分析工具、myisamchk分析myisam表操作的工具
 
 mysql返回的时间不是cpu或者机器时间，而是墙上时钟时间，还包含了服务器加载和网络延迟，并不精确，只能大概预估.
 
+### [6.1.6 Security Considerations for LOAD DATA LOCAL
+
+### 这里是从load data的命令跳入进去的，由于安全配置，mysql默认不开启load data，load data本质是mysql客户端发送了文件所在地址，然后mysql server自己去查找的，所以如果server不安全，它其实可以任意扫描client的文件。也可以开启一个参数load-data-local-dir限制访问路径。
+
+还讲了mysql shell工具能做的一些事情，表导入导出、并行导入、实例备份、加载备份等能力，具体命令没说，要到mysql shell utilities那章节去看。
+
+]
+
+### 3.3.4 Retrieving Information from a Table
+
+讲了基本的增删改查语句，以及排序、分组函数啥的。日期函数我之前用的不熟，这里讲到了，感觉都挺合适的。还有就是正则匹配接触到了新的形式：REGEXP_LIKE，感觉比like更强大了，但是不知道内部如何实现的，还有没有索引的问题。
+
+分组时根据sql_mode可以决定是否进行count时select的所有列是否需要都在group by 语句中
+
+mysql>SETsql_mode='ONLY_FULL_GROUP_BY';
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>SELECTowner,COUNT(*)FROMpet;
+
+ERROR 1140 (42000):In aggregated query without GROUP BY, expression
+
+#1 of SELECT list contains nonaggregated column 'menagerie.pet.owner';
+
+this is incompatible with sql_mode=only_full_group_by
+
+select database();获取当前数据库
+
+show tables;获取表
+
+describe pet;描述表
+
+show create table [tablename]；查看建表语句
+
+用户定义变量：
+
+mysql>SELECT@min_price:=MIN(price),@max_price:=MAX(price)FROMshop;
+
+mysql>SELECT*FROMshopWHEREprice=@min_priceORprice=@max_price;
+
++---------+--------+-------+
+
+|article|dealer|price|
+
++---------+--------+-------+
+
+|0003|D|1.25|
+
+|0004|D|19.95|
+
++---------+--------+-------+
+
+获取自增主键：
+
+SELECT@last:=LAST_INSERT_ID();
+
+bit_count、bit_or很巧妙的用法
+
+SELECTyear,month,BIT_COUNT(BIT_OR(1<<day))ASdaysFROMt1
+
+GROUPBYyear,month;
+
+myisam可以设置前置自增主键，如：
+
+CREATETABLEanimals(
+
+grpENUM('fish','mammal','bird')NOTNULL,
+
+idMEDIUMINTNOTNULLAUTO_INCREMENT,
+
+nameCHAR(30)NOTNULL,
+
+PRIMARYKEY(grp,id)
+
+)ENGINE=MyISAM;
+
+INSERTINTOanimals(grp,name)VALUES
+
+('mammal','dog'),('mammal','cat'),
+
+('bird','penguin'),('fish','lax'),('mammal','whale'),
+
+('bird','ostrich');
+
+SELECT*FROManimalsORDERBYgrp,id;
+
++--------+----+---------+
+
+| grp    | id | name    |
+
++--------+----+---------+
+
+| fish   |  1 | lax     |
+
+| mammal |  1 | dog     |
+
+| mammal |  2 | cat     |
+
+| mammal |  3 | whale   |
+
+| bird   |  1 | penguin |
+
+| bird   |  2 | ostrich |
+
++--------+----+---------+
+
+这时候grp相同的自增键是递增的，不同的grp则是不同的序列
+
+如果AUTO_INCREMENT列单独也是个索引，index(id)，那么自增序列就不考虑grep前缀的问题了。
+
