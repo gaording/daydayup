@@ -1,3 +1,4 @@
+import org.junit.Test;
 import redis.clients.jedis.Jedis;
 
 /**
@@ -18,4 +19,10 @@ public class TestOneJedisClient {
     public static Jedis getJedis() {
         return jedis;
     }
+
+    @Test
+    public void test(){
+        System.out.println(2<<2);
+    }
+
 }
