@@ -1,3 +1,5 @@
+package offer;
+
 /**
  * Copyright: Copyright (c) 2021 IWhaleCloud
  *
@@ -14,7 +16,7 @@
  */
 public class Power {
     public double Power(double base, int exponent) {
-        double res = 0;
+        double res ;
         if (equal(base, 0)) {
             return 0;
         }
@@ -38,9 +40,6 @@ public class Power {
     }
 
     public boolean equal(double a, double b) {
-        if (a - b < 0.000001 || a - b > -0.000001) {
-            return true;
-        }
-        return false;
+        return a - b < 0.000001 || a - b > -0.000001;
     }
 }
