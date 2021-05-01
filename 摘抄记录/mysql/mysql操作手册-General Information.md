@@ -222,3 +222,59 @@ SELECT*FROManimalsORDERBYgrp,id;
 
 如果AUTO_INCREMENT列单独也是个索引，index(id)，那么自增序列就不考虑grep前缀的问题了。
 
+## 4.2 Using MySQL Programs
+
+### 4.2.2 Specifying Program Options
+
+mysql提供了一些shell命令，这些shell命令可以指定各种启动参数，参数的加载顺序：1.读取环境变量 2.读取配置文件open file 3.读取命令行输入的参数 后面的会覆盖掉前面同类型的参数。
+
+mysqld 的--user参数例外，优先读取文件中的，不优先采用命令行，处于安全考虑怕被改。还有一个例外是mysqld-auto.cnf文档，它被最后加载，所以它比命令行的优先级还高。
+
+#### 4.2.2.1 Using Options on the Command Line
+
+命令行使用参数时大多有长短两种形式，比如--help和--?是一致的，-h localhost和--h=localhost是一致的，有些参数和值分不分开也都可以，比如：
+
+mysql-uroot
+
+mysql-uroot
+
+`--skip-grant-tables`和`--skip_grant_tables`也是等价的。但是运行时设置和查看系统变量必须用下划线。
+
+SETGLOBALgeneral_log=ON;
+
+SELECT@@GLOBAL.general_log;
+
+服务开启时系统变量作为参数被设置时则可以不用下划线，例如`--general_log=ON`and`--general-log=ON`是等价的。
+
+几个命令：
+
+```plain
+mysqladmin --count=1K --sleep=10 ping
+```
+```plain
+shell> mysql -u root -p -e "SELECT VERSION();SELECT NOW()"
+Enter password: ******
++------------+
+| VERSION()  |
++------------+
+| 8.0.19     |
++------------+
++---------------------+
+| NOW()               |
++---------------------+
+| 2019-09-03 10:36:48 |
++---------------------+
+shell>
+```
+#### 4.2.2.2 Using Option Files
+
+可以指定配置文件，配置参数什么的，还有个配置组的概念，不同命令读文件时会读取和命令名一样的配置组中的配置。大致跳过，不细写。一些命令：
+
+shell>mysql--max_allowed_packet=16M
+
+shell>mysql--max_allowed_packet=16*1024*1024
+
+mysql>SETGLOBALmax_allowed_packet=16M;  这行不合法，set的时候不能用16M了
+
+mysql>SETGLOBALmax_allowed_packet=16*1024*1024;
+
