@@ -278,3 +278,113 @@ mysql>SETGLOBALmax_allowed_packet=16M;  这行不合法，set的时候不能用1
 
 mysql>SETGLOBALmax_allowed_packet=16*1024*1024;
 
+mysql -h localhost 会通过unix socket file去连接当前mysql server，命令行中-p是无效的，而mysql -h 127.0.0.1则会通过TCP/IP连接mysql server
+
+本机测试中mysql -h localhost -u root -p -P 6666能连接成功，而mysql -h 127.0.0.1 -u root -p -P 6666连接失败
+
+mysql的登录信息默认会读配置文件中client或者mysql组的配置信息。将用户名，密码，主机，端口都配置在配置文件中，执行mysql_config_editor set -u root -h localhost -p即可进行配置，下次连接时，直接输入mysql即可，或者指定读配置组--login-path=client
+
+### 4.2.5 Connecting to the Server Using URI-Like Strings or Key-Value Pairs
+
+mysql配置url连接的一些参数：
+
+scheme、user、password（直接明文指定不安全）、host、port、socket、schema（默认连接的数据库），host中localhost的处理和上面的一样，由连接协议确定，如果为TCP/IP，则读取端口，若为unix socket file，则直接读取文件
+
+额外的连接参数：
+
+ssl-mode、ssl-ca、ssl-capath、ssl-cert、ssl-cipher、ssl-crl、ssl-crlpath、ssl-key这些都是安全相关的配置，没用过。
+
+tls-version、tls-versions、tls-ciphersuites压缩相关的参数。
+
+get-server-public-key从服务获取RSA密钥对的公钥，当mysql协议连接到服务并且ssl禁用时
+
+server-public-key-path存储RSA密钥对中的公钥的文件
+
+connect-timeout连接超时时间
+
+compression、compression-algorithms、compression-level压缩配置
+
+connection-attributes控制连接时应用程序传给服务的k-v键值对
+
+mysqlx://user@host?connection-attributes
+
+mysqlx://user@host?connection-attributes=true
+
+mysqlx://user@host?connection-attributes=false
+
+mysqlx://user@host?connection-attributes=[attr1=val1,attr2,attr3=]
+
+mysqlx://user@host?connection-attributes=[]
+
+### 4.2.7 Connection Transport Protocols
+
+连接传输协议tcp默认是不安全的，但是可以进行加密。一般我们用的就是这个协议，因为要连接远端的mysql服务。
+
+还有socket-file、named-pipe都是基于本地的。不做详述
+
+### 4.2.8 Connection Compression Control
+
+传输时进行数据压缩，可以让传输速度更快，但是客户端和服务端都需要就行压缩和解压缩操作，如果带宽有限的情况下，可以采用压缩保证传输速度。主从集群同步也会涉及到压缩。压缩能提高网络传输效率，但是加大了cpu的负荷。
+
+8.0压缩参数是必填的，8.0以前不指定就会采用不压缩的方式传输。
+
+--compress、 --compression-algorithms属于压缩相关参数，不指定--compression-algorithms时默认的压缩算法是zlid，指定之后，压缩算法为zlib和指定的算法的并集。
+
+主从复制时，如果slave节点压缩算法开启，即slave_compressed_protocol启用时，它的优先级高于master_compression_algorithms，此时如果source和replica都支持zlib压缩算法，则会采用zlib算法。如果slave_compressed_protocol禁用时，则会采用master_compression_algorithms算法。
+
+### 4.2.9 Setting Environment Variables
+
+可以通过命令行设置环境变量，但只是一次性生效，若想下次启动时再次生效，可将相关参数配置到启动文件中。my.cnf或者之前的login.cnf
+
+## 4.3 Server and Server-Startup Programs
+
+### 4.3.1 mysqld — The MySQL Server
+
+mysqld就是一个mysql server，管理着mysql数据目录。数据目录包含数据库和表，也包含类似log日志文件和status状态文件等其它信息。
+
+mysql启动类的关系是mysql.server配置额外参数去启动mysql_safe，mysql_safe回去监控mysql进程并在挂掉时自动重启，最终启动命令是mysqld。mysql是mysql服务的客户端程序，是连接调用服务的。mysqld_multi管理多个mysql服务（是不是就算是集群了？）
+
+## 4.4 Installation-Related Programs
+
+一些相关的程序，插件之类的
+
+comp_err查看错误日志的，mysql启动时会自动运行
+
+mysql_secure_installation安全升级的，提高安全等级
+
+mysql_ssl_rsa_setup生成ssl/rsa文件的，开启ssl验证时能用到
+
+mysql_tzinfo_to_sql把服务器本地的时间加载到mysql时区表中
+
+mysql_upgrade检查并更新表，8.0之后mysql server负责执行这个更新任务，mysql_upgrade就过期了。它更新表时候是会去锁表的，生产环境轻易不会用
+
+## 4.5 Client Programs
+
+mysql客户端可以调用各种命令，有对应的参数表，有问题可直接查询
+
+然后mysql的输入内容都记录在.mysql_history（unix），/var/log/message（linux），可以看到输入的各种语句。可以选择忽略一些语句，如果命令行中的语句是多行输入的，mysql history会同时记录多行的输入和连成一行的输入。
+
+可以不让这个文件记录，删除它，然后把它挂到/dev/null下，可以在配置文件中设置这个变量，也可以调用命令ln-s/dev/null $HOME/.mysql_history
+
+mysql命令输入：
+
+导入文件：
+
+mysql*db_name*<*text_file*
+
+mysql < text_file
+
+mysql>source*file_name*
+
+mysql>\.*file_name*
+
+如果mysql客户端共享的话，可能我们不希望mysql的输入历史保留下来（为了安全考虑），可以禁用unix下面的mysql_history，同时mysql启动时加入参数--histignore=“*”来达到禁止上下翻查历史记录的目的。
+
+mysql可以设置安全更改、删除模式，select的最大行限制，join表的最大行数限制
+
+SETsql_safe_updates=1,sql_select_limit=1000,max_join_size=1000000;
+
+设置了sql_sage_update的时候，update或者delete必须有where语句或者limit语句，且where语句中的条件要为key
+
+sql_select_limit默认限制返回不会超过1000行，除非你sql自己加了limit参数，max_join_size判断join的表中有超过1000000行的，就会报错。
+
