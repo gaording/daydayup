@@ -30,6 +30,13 @@ public class JedisTest {
         jedis = new Jedis("127.0.0.1", 6379,0);
     }
 
+    @Test
+    public void test(){
+        for (int i = 0; i < 512; i++) {
+            jedis.hset("user",String.format("field%d",i),String.format("value%s",i));
+        }
+    }
+
     //jedis string、list、set、hash、zset
     @Test
     public void test1() {
