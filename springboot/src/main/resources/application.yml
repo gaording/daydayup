@@ -1,0 +1,23 @@
+# 应用名称
+spring:
+  application:
+    name: springboot-demo
+  datasource:
+    url: jdbc:mysql://localhost:3306/test?serverTimezone=UTC
+    username: root
+    password: mysqlpassword123
+    driver-class-name: org.mariadb.jdbc.Driver
+
+
+# 应用服务 WEB 访问端口
+server:
+  port: 8080
+
+logging:
+  level:
+    com:
+      example:
+        mapper: debug
+
+
+
