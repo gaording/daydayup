@@ -6,7 +6,7 @@ mybatis配置文件相关：
 InputStream inputStream= Resources.getResourceAsStream("mybatis-config.xml");
 SqlSessionFactory sqlSessionFactory=new SqlSessionFactoryBuilder().build(inputStream);
 SqlSession session=sqlSessionFactory.openSession();
-User user=new User();
+com.example.mybatis.entity.User user=new com.example.mybatis.entity.User();
 session.insert("",user);
 session.commit();
 session.close();

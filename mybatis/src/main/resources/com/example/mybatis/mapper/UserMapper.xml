@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mybatis.mapper.UserMapper">
+    <cache eviction="LRU" flushInterval="60000" size="512" readOnly="true"/>
+    <select id="selectUserById" parameterType="int" resultType="com.example.mybatis.entity.User">
+        select * from tb_user
+        <if test="id!=null and id!=''">
+            where id=#{id}
+        </if>
+    </select>
+
+    <select id="selectAllUsers" resultType="user">
+        select * from tb_user
+    </select>
+    <delete id="deleteUserById" parameterType="int">
+        delete from tb_user where id=#{id}
+    </delete>
+</mapper>
