@@ -16,6 +16,7 @@
         <module>springcloud</module>
         <module>mybatis</module>
         <module>springmvc</module>
+        <module>activemqdemo</module>
     </modules>
 
     <build>
