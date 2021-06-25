@@ -14,13 +14,20 @@ package jvmdemo;
  */
 public class ClassLoaderTest {
     public static void main(String[] args) {
-        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-        System.out.println(systemClassLoader);
+//        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+//        System.out.println(systemClassLoader);
+//
+//        ClassLoader extClassLoader = systemClassLoader.getParent();
+//        System.out.println(extClassLoader);
+//
+//        ClassLoader bootClassLoader = extClassLoader.getParent();
+//        System.out.println(bootClassLoader);
 
-        ClassLoader extClassLoader = systemClassLoader.getParent();
-        System.out.println(extClassLoader);
+        System.out.println(String.class.getClassLoader());
+        ClassLoaderTest[] s1 = new ClassLoaderTest[10];
+        System.out.println(s1.getClass().getClassLoader());
+        int[] arr = new int[2];
+        System.out.println(arr.getClass().getClassLoader());
 
-        ClassLoader bootClassLoader = extClassLoader.getParent();
-        System.out.println(bootClassLoader);
     }
 }
