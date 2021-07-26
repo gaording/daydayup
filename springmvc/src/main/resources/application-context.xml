@@ -8,6 +8,46 @@
 
     <custom:custom id="test" name="test" remark="test"/>
     <bean id="car" class="com.grd.common.factorybean.CarFactoryBean">
-        <property name="carInfo" value="超级跑车,400,20000"/>
+        <property name="carInfo" value="菜b,400,20000"/>
+    </bean>
+    <bean id="userManager" class="com.grd.common.bean.UserManager">
+        <property name="date" value="2019-10-02"/>
+    </bean>
+
+    <!--
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="customEditors">
+            <map>
+                <entry key="java.util.Date">
+                    <bean class="com.grd.common.config.DateProopertyEditor"/>
+                </entry>
+            </map>
+        </property>
+    </bean>
+    -->
+    <bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+        <property name="propertyEditorRegistrars">
+            <list>
+                <bean class="com.grd.common.config.DatePropertyEditorRegister"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean class="com.grd.common.config.MyBeanPostProcessor"/>
+
+    <bean class="com.grd.common.config.ObscenittyRemovingBeanFactoryPostProcessor">
+        <property name="obscenties">
+            <set>
+                <value>菜b</value>
+                <value>bollocks</value>
+                <value>bum</value>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="simpleBean" class="com.grd.common.bean.SimpleBean">
+        <property name="username" value="bollocks"/>
+        <property name="password" value="bum"/>
+        <property name="email" value="菜b"/>
     </bean>
 </beans>
