@@ -3,9 +3,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: jedis连接池
  * @version: v1.0.0
  * @author: gaorunding

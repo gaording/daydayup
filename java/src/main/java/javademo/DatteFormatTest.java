@@ -5,9 +5,8 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 日期格式化
  * @version: v1.0.0
  * @author: gaorunding

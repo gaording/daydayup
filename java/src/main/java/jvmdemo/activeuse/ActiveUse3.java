@@ -3,9 +3,8 @@ package jvmdemo.activeuse;
 import java.util.Random;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 类初始化的几种触发方式
  * @version: v1.0.0
  * @author: gaorunding

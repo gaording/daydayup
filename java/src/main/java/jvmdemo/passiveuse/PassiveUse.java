@@ -1,9 +1,8 @@
 package jvmdemo.passiveuse;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 类不初始化的调用方式
  * @version: v1.0.0
  * @author: gaorunding

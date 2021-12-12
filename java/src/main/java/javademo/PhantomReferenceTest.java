@@ -4,9 +4,8 @@ import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 虚引用队列测试
  * @version: v1.0.0
  * @author: gaorunding

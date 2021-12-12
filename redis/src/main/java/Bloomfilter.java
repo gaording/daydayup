@@ -10,9 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 手动实现bloomfilter
  * @version: v1.0.0
  * @author: gaorunding

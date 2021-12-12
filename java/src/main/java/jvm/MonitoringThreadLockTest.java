@@ -1,9 +1,8 @@
 package jvm;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 检测死锁
  * @version: v1.0.0
  * @author: gaorunding

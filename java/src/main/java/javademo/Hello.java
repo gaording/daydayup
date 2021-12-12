@@ -6,9 +6,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 资源国际化
  * @version: v1.0.0
  * @author: gaorunding

@@ -1,9 +1,8 @@
 package offer;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 旋转数组的最小值
  * @version: v1.0.0
  * @author: gaorunding

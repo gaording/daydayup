@@ -1,9 +1,8 @@
 package offer;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 数值的整数次方
  * @version: v1.0.0
  * @author: gaorunding

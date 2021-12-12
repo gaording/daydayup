@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: java7自动关闭资源的try语句，要求资源实现了AutoCloseable或Closeable接口
  * @version: v1.0.0
  * @author: gaorunding

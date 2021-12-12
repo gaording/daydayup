@@ -1,9 +1,8 @@
 package offer;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 获取丑数
  * @version: v1.0.0
  * @author: gaorunding

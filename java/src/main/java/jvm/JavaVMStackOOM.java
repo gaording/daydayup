@@ -1,9 +1,8 @@
 package jvm;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 栈动态扩展，内容过多导致操作系统内存不足
  * @version: v1.0.0
  * @author: gaorunding

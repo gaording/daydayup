@@ -5,9 +5,8 @@ import common.TreeNode;
 import java.util.Arrays;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 由前序和中序遍历重建二叉树
  * @version: v1.0.0
  * @author: gaorunding

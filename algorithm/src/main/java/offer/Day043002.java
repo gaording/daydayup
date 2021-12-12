@@ -3,9 +3,8 @@ package offer;
 import java.util.Stack;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 定义一个有min函数的栈
  * @version: v1.0.0
  * @author: gaorunding

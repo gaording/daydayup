@@ -1,9 +1,8 @@
 package offer;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 约瑟夫环（数学问题求解）
  * @version: v1.0.0
  * @author: gaorunding

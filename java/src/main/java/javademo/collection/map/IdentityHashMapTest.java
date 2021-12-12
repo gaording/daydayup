@@ -3,9 +3,8 @@ package javademo.collection.map;
 import java.util.IdentityHashMap;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 通过严格的==判断key是否相等
  * @version: v1.0.0
  * @author: gaorunding

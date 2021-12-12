@@ -5,9 +5,8 @@ import sun.misc.Unsafe;
 import java.lang.reflect.Field;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 直接内存溢出
  * @version: v1.0.0
  * @author: gaorunding

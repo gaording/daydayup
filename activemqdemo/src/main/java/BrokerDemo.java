@@ -1,9 +1,8 @@
 import org.apache.activemq.broker.BrokerService;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: broker就代表activemq实例
  * @version: v1.0.0
  * @author: gaorunding

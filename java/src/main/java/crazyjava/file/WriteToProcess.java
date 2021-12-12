@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 写出流到子进程
  * @version: v1.0.0
  * @author: gaorunding

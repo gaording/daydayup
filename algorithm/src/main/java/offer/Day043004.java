@@ -7,9 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 层序遍历二叉树
  * @version: v1.0.0
  * @author: gaorunding

@@ -1,9 +1,8 @@
 package jvmdemo;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 字符串常量池大小设置 -XX:StringTableSize=1000  java8对其进行了范围限制，java11测试时又和java8不一样
  * @version: v1.0.0
  * @author: gaorunding

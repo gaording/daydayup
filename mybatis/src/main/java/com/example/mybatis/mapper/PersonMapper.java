@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.mapping.FetchType;
 
 /**
- * @program: forOffer
+ * @program: daydayup
  * @description:
  * @author: gaorunding
  * @create: 2021-05-27 14:12

@@ -1,9 +1,8 @@
 package jvm;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 运行时常量池导致的内存溢出异常
  * @version: v1.0.0
  * @author: gaorunding

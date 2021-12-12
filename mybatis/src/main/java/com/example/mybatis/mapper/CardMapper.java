@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 
 /**
- * @program: forOffer
+ * @program: daydayup
  * @description:
  * @author: gaorunding
  * @create: 2021-05-27 14:12

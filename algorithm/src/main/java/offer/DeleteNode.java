@@ -3,9 +3,8 @@ package offer;
 import common.ListNode;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: o(1)时间删除链表节点
  * @version: v1.0.0
  * @author: gaorunding

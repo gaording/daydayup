@@ -3,9 +3,8 @@ package jvmdemo.activeuse;
 import java.io.Serializable;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 类初始化方法触发
  * @version: v1.0.0
  * @author: gaorunding

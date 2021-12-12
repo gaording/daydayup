@@ -8,9 +8,8 @@ import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 从尾到头打印链表
  * @version: v1.0.0
  * @author: gaorunding

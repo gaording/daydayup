@@ -5,9 +5,8 @@ import redis.clients.jedis.Response;
 import java.io.IOException;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 简单限流
  * @version: v1.0.0
  * @author: gaorunding

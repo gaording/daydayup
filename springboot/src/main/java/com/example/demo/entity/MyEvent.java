@@ -3,9 +3,8 @@ package com.example.demo.entity;
 import org.springframework.context.ApplicationEvent;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description:
  * @version: v1.0.0
  * @author: gaorunding

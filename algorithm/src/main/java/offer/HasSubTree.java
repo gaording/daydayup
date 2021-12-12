@@ -3,9 +3,8 @@ package offer;
 import common.TreeNode;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description:判断二叉树A中是否包含子树B
  * @version: v1.0.0
  * @author: gaorunding

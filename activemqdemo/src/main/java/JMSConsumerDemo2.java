@@ -9,9 +9,8 @@ import javax.jms.TextMessage;
 import java.io.IOException;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description:
  * @version: v1.0.0
  * @author: gaorunding

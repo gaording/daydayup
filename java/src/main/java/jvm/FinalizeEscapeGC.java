@@ -1,9 +1,8 @@
 package jvm;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 对象死亡回收时会调用一次finalize方法
  * @version: v1.0.0
  * @author: gaorunding

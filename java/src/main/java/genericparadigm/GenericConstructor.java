@@ -1,9 +1,8 @@
 package genericparadigm;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 显示声明泛型形参
  * @version: v1.0.0
  * @author: gaorunding

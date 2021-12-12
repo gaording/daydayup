@@ -3,9 +3,8 @@ package offer;
 import common.ListNode;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 两个链表的第一个公共节点
  * @version: v1.0.0
  * @author: gaorunding

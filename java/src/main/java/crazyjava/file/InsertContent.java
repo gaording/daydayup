@@ -6,9 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 指定文件、指定位置追加内容
  * @version: v1.0.0
  * @author: gaorunding

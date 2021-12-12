@@ -5,9 +5,8 @@ import org.springframework.context.MessageSource;
 import java.util.Locale;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description:
  * @version: v1.0.0
  * @author: gaorunding

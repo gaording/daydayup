@@ -1,9 +1,8 @@
 package jvmdemo;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 同步锁字节码测试
  * @version: v1.0.0
  * @author: gaorunding

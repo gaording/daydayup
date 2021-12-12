@@ -3,9 +3,8 @@ package lock;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 线程阻塞时锁中断
  * @version: v1.0.0
  * @author: gaorunding

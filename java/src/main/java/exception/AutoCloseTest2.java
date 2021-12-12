@@ -7,9 +7,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: java9甚至不要求在try之后的圆括号中声明并创建资源(要求变量是final或者是有效的final （ effectively final ）)
  * @version: v1.0.0
  * @author: gaorunding

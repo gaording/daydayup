@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: n个骰子的点数及出现的概率
  * @version: v1.0.0
  * @author: gaorunding

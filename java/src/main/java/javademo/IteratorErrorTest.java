@@ -3,9 +3,8 @@ package javademo;
 import java.util.HashSet;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 集合遍历时的问题
  * @version: v1.0.0
  * @author: gaorunding

@@ -5,9 +5,8 @@ import java.util.Set;
 import java.util.UUID;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 延时队列
  * @version: v1.0.0
  * @author: gaorunding

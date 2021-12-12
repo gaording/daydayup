@@ -2,9 +2,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 漏斗限流
  * @version: v1.0.0
  * @author: gaorunding

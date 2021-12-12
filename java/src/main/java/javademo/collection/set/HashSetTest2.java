@@ -3,9 +3,8 @@ package javademo.collection.set;
 import java.util.HashSet;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 测试更改hashset中元素属性的情况
  * @version: v1.0.0
  * @author: gaorunding

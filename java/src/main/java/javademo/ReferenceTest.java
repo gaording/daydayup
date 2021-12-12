@@ -3,9 +3,8 @@ package javademo;
 import java.lang.ref.WeakReference;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 测试虚引用
  * @version: v1.0.0
  * @author: gaorunding

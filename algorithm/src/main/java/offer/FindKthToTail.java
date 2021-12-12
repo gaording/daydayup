@@ -3,9 +3,8 @@ package offer;
 import common.ListNode;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 求链表中倒数第K个节点
  * @version: v1.0.0
  * @author: gaorunding

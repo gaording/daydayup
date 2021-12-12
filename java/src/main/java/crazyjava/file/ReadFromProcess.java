@@ -5,9 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 读取process子进程中的输入流
  * @version: v1.0.0
  * @author: gaorunding

@@ -2,9 +2,8 @@ import org.junit.Test;
 import redis.clients.jedis.Jedis;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 唯一jedis客户端
  * @version: v1.0.0
  * @author: gaorunding

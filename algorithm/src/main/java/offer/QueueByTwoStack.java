@@ -3,9 +3,8 @@ package offer;
 import java.util.Stack;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 两个栈实现队列操作
  * @version: v1.0.0
  * @author: gaorunding

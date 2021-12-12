@@ -1,9 +1,8 @@
 package common;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 树节点
  * @version: v1.0.0
  * @author: gaorunding

@@ -1,9 +1,8 @@
 package offer;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 将数组中奇数放到偶数前
  * @version: v1.0.0
  * @author: gaorunding

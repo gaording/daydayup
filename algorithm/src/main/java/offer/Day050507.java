@@ -3,9 +3,8 @@ package offer;
 import common.TreeNode;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 判断是否是平衡二叉树
  * @version: v1.0.0
  * @author: gaorunding

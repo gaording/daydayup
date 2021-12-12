@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 排序测试
  * @version: v1.0.0
  * @author: gaorunding

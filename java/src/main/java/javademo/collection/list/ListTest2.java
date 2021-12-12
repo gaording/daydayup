@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
- * Copyright: Copyright (c) 2021 IWhaleCloud
  *
- * @program: forOffer
+ * @program: daydayup
  * @description: 测试sort和replaceAll
  * @version: v1.0.0
  * @author: gaorunding
