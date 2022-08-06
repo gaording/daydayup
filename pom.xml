@@ -17,7 +17,6 @@
         <module>mybatis</module>
         <module>springmvc</module>
         <module>activemqdemo</module>
-        <module>dubbo-test</module>
     </modules>
 
     <build>
