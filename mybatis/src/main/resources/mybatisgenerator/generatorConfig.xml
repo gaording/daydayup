@@ -5,10 +5,12 @@
 
 <generatorConfiguration>
 
-    <context id="uds_consolecenter" targetRuntime="MyBatis3Simple">
-        <plugin type="com.example.mybatis.mybatisgenerator.MyBatisPlugin">
+    <context id="uds_consolecenter" targetRuntime="MyBatis3DynamicSql">
+        <plugin type="com.example.mybatisgenerator.MyBatisPlugin">
             <property name="hasLombok" value="true"/>
+            <property name="user.name" value="gaorunding1"/>
         </plugin>
+        <!--        <plugin type="org.mybatis.generator.plugins.dsql.DisableDeletePlugin"/>-->
 
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
@@ -21,24 +23,107 @@
 
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false"/>
+            <property name="useJSR310Types" value="true"/>
         </javaTypeResolver>
 
-        <javaModelGenerator targetPackage="test.model" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true"/>
+        <javaModelGenerator targetPackage="com.jd.datacenter.console.model.servicecall.dataobject"
+                            targetProject="/Users/gaorunding1/Downloads/project/data-center-console/data-center-console-model/src/main/java">
+            <property name="enableSubPackages" value="false"/>
         </javaModelGenerator>
 
-        <sqlMapGenerator targetPackage="test.xml" targetProject="src/main/resources">
-            <property name="enableSubPackages" value="true"/>
+        <sqlMapGenerator targetPackage="mapper.servicecall"
+                         targetProject="/Users/gaorunding1/Downloads/project/data-center-console/data-center-console-dao/src/main/resources">
+            <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator type="XMLMAPPER" targetPackage="test.dao" targetProject="src/main/java">
-            <property name="enableSubPackages" value="true"/>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.jd.datacenter.console.mapper.common"
+                             targetProject="/Users/gaorunding1/Downloads/project/data-center-console/data-center-console-dao/src/main/java">
+            <property name="enableSubPackages" value="false"/>
+            <property name="dynamicSqlSupportPackage" value="com.jd.datacenter.console.sqlprovider.servicecall"/>
         </javaClientGenerator>
 
-        <table tableName="cluster_info" domainObjectName="clusterInfo">
-            <property name="useActualColumnNames" value="true"/>
-            <property name="enableDeleteByPrimaryKey" value="false"/>
+        <!--        <table tableName="cluster_info" domainObjectName="ClusterInfo"-->
+        <!--               enableInsert="false" enableDeleteByPrimaryKey="false"-->
+        <!--               enableUpdateByPrimaryKey="false" enableSelectByPrimaryKey="false"-->
+        <!--        >-->
+        <!--            <property name="useActualColumnNames" value="false"/>-->
+        <!--            <property name="enableDeleteByPrimaryKey" value="false"/>-->
+        <!--            <columnOverride column="audit_status" javaType="Integer"/>-->
+        <!--            <columnOverride column="publish_status" javaType="Integer"/>-->
+        <!--            <columnOverride column="status" javaType="Integer"/>-->
+        <!--            <columnOverride column="cluster_type" javaType="Integer"/>-->
+        <!--            <columnOverride column="is_delete" javaType="Boolean"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="group_info" domainObjectName="GroupInfo"-->
+        <!--               enableInsert="false" enableDeleteByPrimaryKey="false"-->
+        <!--               enableUpdateByPrimaryKey="false" enableSelectByPrimaryKey="false"-->
+        <!--        >-->
+        <!--            <property name="useActualColumnNames" value="false"/>-->
+        <!--            <columnOverride column="cluster_ids_json" javaType="String"/>-->
+        <!--            <columnOverride column="is_compress" javaType="Boolean"/>-->
+        <!--            <columnOverride column="audit_status" javaType="Integer"/>-->
+        <!--            <columnOverride column="publish_status" javaType="Integer"/>-->
+        <!--            <columnOverride column="status" javaType="Integer"/>-->
+        <!--            <columnOverride column="is_delete" javaType="Boolean"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="view_info" domainObjectName="ViewInfo"-->
+        <!--               enableInsert="false" enableDeleteByPrimaryKey="false"-->
+        <!--               enableUpdateByPrimaryKey="false" enableSelectByPrimaryKey="false"-->
+        <!--        >-->
+        <!--            <property name="useActualColumnNames" value="false"/>-->
+        <!--            <property name="enableDeleteByPrimaryKey" value="false"/>-->
+        <!--            <columnOverride column="audit_status" javaType="Integer"/>-->
+        <!--            <columnOverride column="publish_status" javaType="Integer"/>-->
+        <!--            <columnOverride column="view_type" javaType="Integer"/>-->
+        <!--            <columnOverride column="status" javaType="Integer"/>-->
+        <!--            <columnOverride column="is_delete" javaType="Boolean"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="dataname_info" domainObjectName="DatanameInfo"-->
+        <!--               enableInsert="false" enableDeleteByPrimaryKey="false"-->
+        <!--               enableUpdateByPrimaryKey="false" enableSelectByPrimaryKey="false"-->
+        <!--        >-->
+        <!--            <property name="useActualColumnNames" value="false"/>-->
+        <!--            <property name="enableDeleteByPrimaryKey" value="false"/>-->
+        <!--            <columnOverride column="audit_status" javaType="Integer"/>-->
+        <!--            <columnOverride column="publish_status" javaType="Integer"/>-->
+        <!--            <columnOverride column="status" javaType="Integer"/>-->
+        <!--            <columnOverride column="is_delete" javaType="Boolean"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="data_source_message_info" domainObjectName="DataouSourceMessageInfo"-->
+        <!--               enableInsert="false" enableDeleteByPrimaryKey="false"-->
+        <!--               enableUpdateByPrimaryKey="false" enableSelectByPrimaryKey="false"-->
+        <!--        >-->
+        <!--            <property name="useActualColumnNames" value="false"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="metadata_edit_version" domainObjectName="MetadataEditVersion"-->
+        <!--               enableInsert="false" enableDeleteByPrimaryKey="false"-->
+        <!--               enableUpdateByPrimaryKey="false" enableSelectByPrimaryKey="false"-->
+        <!--        >-->
+        <!--            <property name="useActualColumnNames" value="false"/>-->
+        <!--            <property name="enableDeleteByPrimaryKey" value="false"/>-->
+        <!--            <columnOverride column="edit_json" javaType="String"/>-->
+        <!--        </table>-->
+        <table tableName="service_call_apply" domainObjectName="ServiceCallApply"
+               enableInsert="false" enableDeleteByPrimaryKey="false"
+               enableUpdateByPrimaryKey="false" enableSelectByPrimaryKey="false">
+            <property name="useActualColumnNames" value="false"/>
+            <columnOverride column="apply_view_ids" javaType="String"/>
+            <columnOverride column="available_state" javaType="Integer"/>
         </table>
+        <!--        <table tableName="metadata_publish_audit_history" domainObjectName="MetadataPublishAuditHistory"-->
+<!--                       enableInsert="false" enableDeleteByPrimaryKey="false"-->
+<!--                       enableUpdateByPrimaryKey="false" enableSelectByPrimaryKey="false"-->
+        <!--        >-->
+        <!--            <property name="useActualColumnNames" value="false"/>-->
+        <!--            <property name="enableDeleteByPrimaryKey" value="false"/>-->
+        <!--        </table>-->
+        <!--        <table tableName="xbp_record" domainObjectName="MetadataPublishAuditHistory"-->
+        <!--               enableInsert="false" enableDeleteByPrimaryKey="false"-->
+        <!--               enableUpdateByPrimaryKey="false" enableSelectByPrimaryKey="false"-->
+        <!--        >-->
+        <!--            <property name="useActualColumnNames" value="false"/>-->
+        <!--            <property name="enableDeleteByPrimaryKey" value="false"/>-->
+        <!--        </table>-->
 
     </context>
 </generatorConfiguration>
