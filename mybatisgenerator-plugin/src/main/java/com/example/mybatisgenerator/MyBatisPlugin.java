@@ -1,5 +1,6 @@
-package com.example.mybatis.mybatisgenerator;
+package com.example.mybatisgenerator;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
@@ -11,8 +12,6 @@ import org.mybatis.generator.internal.util.StringUtility;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-
-import static java.lang.System.getProperties;
 
 /**
  * @author The One
@@ -27,8 +26,7 @@ public class MyBatisPlugin extends PluginAdapter {
 
     @Override
     public boolean modelBaseRecordClassGenerated(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        boolean hasLombok = Boolean.parseBoolean(getProperties().getProperty("hasLombok", "false"));
-        System.out.println("hasLombok" + hasLombok);
+        boolean hasLombok = Boolean.parseBoolean(properties.getProperty("hasLombok", "false"));
         if (hasLombok) {
             // 添加domain的import
             topLevelClass.addImportedType("lombok.Data");
@@ -41,6 +39,25 @@ public class MyBatisPlugin extends PluginAdapter {
 
             // 添加domain的注解
             topLevelClass.addAnnotation("@EqualsAndHashCode");
+
+
+            // 添加domain的import
+            topLevelClass.addImportedType("lombok.Builder");
+
+            // 添加domain的注解
+            topLevelClass.addAnnotation("@Builder");
+
+            // 添加domain的import
+            topLevelClass.addImportedType("lombok.NoArgsConstructor");
+
+            // 添加domain的注解
+            topLevelClass.addAnnotation("@NoArgsConstructor");
+
+            // 添加domain的import
+            topLevelClass.addImportedType("lombok.AllArgsConstructor");
+
+            // 添加domain的注解
+            topLevelClass.addAnnotation("@AllArgsConstructor");
         }
 
         topLevelClass.addJavaDocLine("/**");
@@ -57,7 +74,7 @@ public class MyBatisPlugin extends PluginAdapter {
         sb.append(" * ").append(introspectedTable.getFullyQualifiedTable());
         topLevelClass.addJavaDocLine(sb.toString());
         sb.setLength(0);
-        sb.append(" * @author ").append(getProperties().getProperty("user.name"));
+        sb.append(" * @author ").append(properties.getProperty("user.name"));
         topLevelClass.addJavaDocLine(sb.toString());
         sb.setLength(0);
         sb.append(" * @date ");
@@ -86,7 +103,7 @@ public class MyBatisPlugin extends PluginAdapter {
     public boolean modelSetterMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
                                               IntrospectedTable introspectedTable, ModelClassType modelClassType) {
         // 不生成getter
-        boolean hasLombok = Boolean.parseBoolean(getProperties().getProperty("hasLombok", "false"));
+        boolean hasLombok = Boolean.parseBoolean(properties.getProperty("hasLombok", "false"));
         return !hasLombok;
     }
 
@@ -94,12 +111,12 @@ public class MyBatisPlugin extends PluginAdapter {
     public boolean modelGetterMethodGenerated(Method method, TopLevelClass topLevelClass, IntrospectedColumn introspectedColumn,
                                               IntrospectedTable introspectedTable, ModelClassType modelClassType) {
         // 不生成setter
-        boolean hasLombok = Boolean.parseBoolean(getProperties().getProperty("hasLombok", "false"));
+        boolean hasLombok = Boolean.parseBoolean(properties.getProperty("hasLombok", "false"));
         return !hasLombok;
     }
 
     protected String getDateString() {
-        return LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
 }
 
