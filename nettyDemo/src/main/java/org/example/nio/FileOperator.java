@@ -1,9 +1,14 @@
 package org.example.nio;
 
 import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.util.Arrays;
 
 /**
  * @program: daydayup
@@ -13,7 +18,7 @@ import java.nio.channels.FileChannel;
  **/
 public class FileOperator {
     public static void main(String[] args) throws IOException {
-        test3();
+        test4();
     }
 
 
@@ -56,9 +61,44 @@ public class FileOperator {
     private static void test3() throws IOException {
         RandomAccessFile randomAccessFile = new RandomAccessFile("nettyDemo/1.txt", "rw");
         FileChannel channel = randomAccessFile.getChannel();
-        MappedByteBuffer map = channel.map(FileChannel.MapMode.READ_WRITE, 0,8 );
-        map.put(0,(byte) 'H');
-        map.put(7,(byte) '9');
+        MappedByteBuffer map = channel.map(FileChannel.MapMode.READ_WRITE, 0, 8);
+        map.put(0, (byte) 'H');
+        map.put(7, (byte) '9');
         randomAccessFile.close();
+    }
+
+    /**
+     * 测试多个buffer
+     */
+    private static void test4() throws IOException {
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        serverSocketChannel.bind(new InetSocketAddress(7000));
+        ByteBuffer[] byteBuffers = new ByteBuffer[2];
+        byteBuffers[0] = ByteBuffer.allocate(5);
+        byteBuffers[1] = ByteBuffer.allocate(3);
+
+        SocketChannel socketChannel = serverSocketChannel.accept();
+        int messageLength = 8;
+        while (true) {
+            int byteRead = 0;
+            while (byteRead < messageLength) {
+                long length = socketChannel.read(byteBuffers);
+                byteRead += length;
+                System.out.println("byteRead=" + byteRead);
+                Arrays.stream(byteBuffers).map(byteBuffer -> "position=" + byteBuffer.position() + ",limit=" + byteBuffer.limit()).forEach(System.out::println);
+                //所有buffer flip
+                Arrays.stream(byteBuffers).forEach(ByteBuffer::flip);
+            }
+
+            //数据读出显示到客户端
+            long byteWrite = 0;
+            while (byteWrite < messageLength) {
+                long length = socketChannel.write(byteBuffers);
+                byteWrite += length;
+            }
+
+            Arrays.stream(byteBuffers).forEach(ByteBuffer::clear);
+            System.out.println("byteRead=" + byteRead + ",byteWrite=" + byteWrite + ",messageLength=" + messageLength);
+        }
     }
 }
